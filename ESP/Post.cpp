@@ -12,12 +12,12 @@
 
 #include <Wire.h>
 
-#define DHTPIN 4 // what digital pin we're connected to
+#define DHTPIN 4 
 
 #define DHTTYPE DHT11 // DHT 11
 
 DHT dht(DHTPIN, DHTTYPE);
-// Replace with your network credentials
+
 const char* ssid     = "Sinh Vien Home";
 const char* password = "06117370";
 
@@ -28,11 +28,7 @@ const char* serverName1 = "http://dighuyniot.tech/demo/postdemo_comment.php";
 
 String apiKeyValue = "tPmAT5Ab3j7F9";
 
-/*#include <SPI.h>
-#define BME_SCK 18
-#define BME_MISO 19
-#define BME_MOSI 23
-#define BME_CS 5*/
+
 
 int value_analog,real_value;
 
@@ -49,7 +45,7 @@ void setup() {
   Serial.print("Connected to WiFi network with IP Address: ");
   Serial.println(WiFi.localIP());
 
-  // (you can also pass in a Wire library object like &Wire2)
+  
   dht.begin();
   pinMode(5,INPUT_PULLUP); 
 }
@@ -59,32 +55,21 @@ void comment()
     WiFiClient client;
     HTTPClient http;
     
-    // Your Domain name with URL path or IP address with path
+    
     http.begin(client, serverName1);
     
-    // Specify content-type header
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     
-    // Prepare your HTTP POST request data
     String httpRequestData = "api_key=" + apiKeyValue + "&comment_subject=" + "Toi"
                            + "&comment_text=" + "Se" + "&comment_status=" + "0" + "";
     Serial.print("httpRequestData: ");
     Serial.println(httpRequestData);
     
-    // You can comment the httpRequestData variable above
-    // then, use the httpRequestData variable below (for testing purposes without the BME280 sensor)
-    //String httpRequestData = "api_key=tPmAT5Ab3j7F9&value1=24.75&value2=49.54&value3=1005.14";
+   
 
-    // Send HTTP POST request
     int httpResponseCode = http.POST(httpRequestData);
      
-    // If you need an HTTP request with a content type: text/plain
-    //http.addHeader("Content-Type", "text/plain");
-    //int httpResponseCode = http.POST("Hello, World!");
-    
-    // If you need an HTTP request with a content type: application/json, use the following:
-    //http.addHeader("Content-Type", "application/json");
-    //int httpResponseCode = http.POST("{\"value1\":\"19\",\"value2\":\"67\",\"value3\":\"78\"}");
+   
     
     if (httpResponseCode>0) {
       Serial.print("HTTP Response code: ");
@@ -94,14 +79,13 @@ void comment()
       Serial.print("Error code: ");
       Serial.println(httpResponseCode);
     }
-    // Free resources
+    
     http.end();
   }
   else {
     Serial.println("WiFi Disconnected");
   }
-  //Send an HTTP POST request every 30 seconds
-  //delay(30000);  
+  
 }
   void loop() {
 
@@ -110,7 +94,7 @@ void comment()
   }
   value_analog=real_value/10;
   float percent = (float)(1024-value_analog)*100/684 ;
-  //percent=100-percent;                            // Tính giá trị phần trăm thực. Chuyển điện thế từ 3.3V ( khô ) thành 3.3V ( ẩm )
+                         // Tính giá trị phần trăm thực. Chuyển điện thế từ 3.3V ( khô ) thành 3.3V ( ẩm )
   Serial.print(percent);
   Serial.print('%');
   Serial.print(" ");
@@ -175,20 +159,9 @@ Serial.print("Humidity: ");
     Serial.print("httpRequestData: ");
     Serial.println(httpRequestData);
     
-    // You can comment the httpRequestData variable above
-    // then, use the httpRequestData variable below (for testing purposes without the BME280 sensor)
-    //String httpRequestData = "api_key=tPmAT5Ab3j7F9&value1=24.75&value2=49.54&value3=1005.14";
-
-    // Send HTTP POST request
     int httpResponseCode = http.POST(httpRequestData);
      
-    // If you need an HTTP request with a content type: text/plain
-    //http.addHeader("Content-Type", "text/plain");
-    //int httpResponseCode = http.POST("Hello, World!");
-    
-    // If you need an HTTP request with a content type: application/json, use the following:
-    //http.addHeader("Content-Type", "application/json");
-    //int httpResponseCode = http.POST("{\"value1\":\"19\",\"value2\":\"67\",\"value3\":\"78\"}");
+   
     
     if (httpResponseCode>0) {
       Serial.print("HTTP Response code: ");
