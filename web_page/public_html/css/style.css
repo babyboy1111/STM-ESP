@@ -1,0 +1,96 @@
+*{
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+
+}
+html{
+    font-family: Arial, Helvetica, sans-serif;
+    scroll-behavior: smooth;
+}
+/* common */
+
+/* ffffffffffffffffffffffffffff */
+.dangnhap {
+    width: 80%;
+    margin: 10px auto;
+    }
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    }
+      
+.button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    }
+body {
+  height: 100%;
+}    
+.main{
+    position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
+  
+}
+
+/* them section de lam cho trang khong cuon len cuon xuong duoc */
+    .login-img{
+        position: relative;
+       
+    }
+   .login-img img{
+        position: absolute;
+        width:100%;
+       height: 100%;
+        object-fit: cover;
+    }
+    .container{
+        display: flex;
+     justify-content: center;
+     align-items: center;
+     margin: auto;
+    }
+   
+    @media (max-width: 1023px) {
+        .container{
+            width: 100%;
+            height: 70%;
+        }
+        .dangnhap {
+           font-size: 1.5em;
+           width: 80%;
+        }
+        input[type=text], input[type=password] ,input[type=submit] {
+            height: 3em;
+            font-size: 1em;
+            padding: 0.5em 0.5em;
+            margin: 0.5em 0;
+        }
+        .login{
+            position: relative;
+            width: 100%;
+            text-align: center;
+            
+        }
+        .child{
+            position: absolute;
+            top:50%;
+            left:20%;
+            right: 20%;
+            color: #4CAF50;
+            font-size: 1.5em;
+        }
+    }
