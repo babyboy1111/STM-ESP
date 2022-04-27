@@ -57,7 +57,96 @@ static void MX_USART2_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+uint8_t dem=0;
+char *pump1="a0x\r\n";
+char *pump2="b2x\r\n";
+char *pump3="c4x\r\n";
+char *pump4="d6x\r\n";
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+//	if(GPIO_Pin==GPIO_PIN_0){
+//		if(check==0){
+//			  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, 1);
+//			  check=1;
+//		}else{
+//		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, 0);
+//		check=0;
+//		}
+//		dem++;
+//		for(int x=500000;x>0;x--);
+//		__HAL_GPIO_EXTI_CLEAR_IT(GPIO_PIN_0);
+//		HAL_NVIC_ClearPendingIRQ(EXTI0_IRQn);
+//	}
+switch(GPIO_Pin)
+{
+case GPIO_PIN_7:
+{   if(pump1=="a0x\r\n"){
+	Uart_sendstring("a1x\r\n");
+			}else{
+				Uart_sendstring("a0x\r\n");
+			}
+	for(int i=0;i<1000000;i++);
+	int i=0;
+	while(!HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_7)&(i<1000000))
+	{
+		i++;
+	}
+	for(int i=0;i<1000000;i++);
+	EXTI->PR|=GPIO_PIN_7;
+	break;
+}
+case GPIO_PIN_8:
+{   if(pump2=="b2x\r\n"){
+	Uart_sendstring("b3x\r\n");
+			}else{
+				Uart_sendstring("b2x\r\n");
+			}
 
+	for(int i=0;i<1000000;i++);
+	int i=0;
+	while(!HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_8)&(i<1000000))
+	{
+		i++;
+	}
+	for(int i=0;i<1000000;i++);
+	EXTI->PR|=GPIO_PIN_8;
+	break;
+}
+case GPIO_PIN_9:
+{   if(pump3=="c4x\r\n"){
+	Uart_sendstring("c5x\r\n");
+			}else{
+				Uart_sendstring("c4x\r\n");
+			}
+
+	for(int i=0;i<1000000;i++);
+	int i=0;
+	while(!HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_9)&(i<1000000))
+	{
+		i++;
+	}
+	for(int i=0;i<1000000;i++);
+	EXTI->PR|=GPIO_PIN_9;
+	break;
+}
+case GPIO_PIN_10:
+{   if(pump4=="d6x\r\n"){
+	Uart_sendstring("d7x\r\n");
+			}else{
+				Uart_sendstring("d6x\r\n");
+			}
+
+	for(int i=0;i<1000000;i++);
+	int i=0;
+	while(!HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_10)&(i<1000000))
+	{
+		i++;
+	}
+	for(int i=0;i<1000000;i++);
+	EXTI->PR|=GPIO_PIN_10;
+	break;
+}
+}
+}
 /* USER CODE END 0 */
 
 /**
@@ -90,7 +179,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  Ringbuf_init();
+Ringbuf_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -100,27 +189,57 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
 	  if (IsDataAvailable()){
-	  		  int data= Uart_read();
-	  		  Uart_write(data);
-	  		  if(So_sanh("1\r\n")){
-	  		  	  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, 1);
+		  int data= Uart_read();
+//		  Uart_write(data);
+		  if(So_sanh("1\r\n")){
+		  	  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, 1);
+		  	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 1);
+		  	pump1="a1x\r\n";
+		  	 }else if(So_sanh("2\r\n")){
+		  	 HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, 0);
+		  	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
+		  	pump1="a0x\r\n";
+		  	 }
 
-	  		  	 }else if(So_sanh("2\r\n")){
-	  		  	  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, 0);
-	  		  	 }
+		  if(So_sanh("3\r\n")){
+			  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, 1);
+			  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 1);
+			  pump2="b3x\r\n";
+			  }else if(So_sanh("4\r\n")){
+			   HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, 0);
+			  	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
+			  	pump2="b2x\r\n";
+			  }
+		  if(So_sanh("5\r\n")){
+		  			  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, 1);
+		  			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, 1);
+		  			pump3="c5x\r\n";
+		  			  }else if(So_sanh("6\r\n")){
+		  			   HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, 0);
+		  		  	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, 0);
+		  		  	pump3="c4x\r\n";
+		  			  }
+		  if(So_sanh("7\r\n")){
+		  			  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, 1);
+		  			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, 1);
+		  			pump4="d7x\r\n";
+		  			  }else if(So_sanh("8\r\n")){
+		  			   HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, 0);
+		  		  	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, 0);
+		  		  	pump4="d6x\r\n";
+		  			  }
 
-	  		  if(So_sanh("3\r\n")){
-	  			  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, 1);
-
-	  			  }else if(So_sanh("4\r\n")){
-	  			   HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, 0);
-	  			  }
-
-
-	  	  }
-
-  }
+          }
+//	         char check1[10];
+//             itoa(check,check1,10);
+//        	 strcat(check1,"x\r\n");
+//        	 Uart_sendstring(pump1);
+//        	 Uart_sendstring(pump2);
+//        	 Uart_sendstring(pump3);
+//        	 Uart_sendstring(pump4);
+ }
   /* USER CODE END 3 */
 }
 
@@ -211,10 +330,27 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : PA0 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PE7 PE8 PE9 PE10 */
+  GPIO_InitStruct.Pin = GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PD12 PD13 PD14 PD15 */
   GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
@@ -222,6 +358,23 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PB4 PB5 PB6 PB7 */
+  GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 }
 
